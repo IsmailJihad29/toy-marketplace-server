@@ -64,7 +64,22 @@ async function run() {
     app.patch("/toys/:id", async (req, res) => { 
       const id = req.params.id;
       const updatedToy = req.body
-      const filter={_id: new ObjectId(id)}
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true }
+      const newToy = {
+        $set: {
+          name: updatedToy.name,
+          pictureURL: updatedToy.pictureURL,
+          subCategory: updatedToy.subCategory,
+          price: updatedToy.price,
+          rating: updatedToy.rating,
+          availableQuantity: updatedToy.availableQuantity,
+          description: updatedToy.description
+
+        }
+      }
+      const result = await toysCollection.updateOne(filter, newToy, options)
+      res.send(result)
     })
 
     app.delete("/toys/:id", async (req, res) => { 
