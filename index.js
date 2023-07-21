@@ -60,7 +60,9 @@ async function run() {
       res.send(result)
     })
 
-    
+    app.delete("/toys/:id", async (req, res) => { 
+      
+    })
 
     await client.db("admin").command({ ping: 1 });
     console.log(
