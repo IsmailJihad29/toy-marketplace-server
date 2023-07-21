@@ -27,11 +27,13 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
+    
     await client.connect();
 
+// collections 
     const toysCollection = client.db("figlandiaDb").collection("toys");
     const reviewsCollection = client.db("figlandiaDb").collection("reviews");
+    const usersCollection = client.db("figlandiaDb").collection("users")
 
     app.get("/toys", async (req, res) => {
       const result = await toysCollection.find().toArray();
@@ -56,6 +58,13 @@ async function run() {
       console.log('new toy', toys);
       const result = await toysCollection.insertOne(toys);
       res.send(result)
+    })
+
+    app.post("/users", async (req, res) => { 
+      const users = req.body 
+      const result = await usersCollection.insertOne(users);
+      res.send(result)
+
     })
 
     await client.db("admin").command({ ping: 1 });
